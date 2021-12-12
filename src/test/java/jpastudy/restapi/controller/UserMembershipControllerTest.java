@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import jpastudy.restapi.RestApiApplication;
 import jpastudy.restapi.controller.request.DefaultMembershipRequest;
 import jpastudy.restapi.controller.request.PointSaveMembershipRequest;
+import jpastudy.restapi.domain.Membership;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,12 @@ public class UserMembershipControllerTest {
   @BeforeEach
   @Rollback(value = false)
   public void defaultDataSave() {
-//        Membership memberShip1 = Membership.memberShipCreate("spc","happypoint");
-//        em.persist(memberShip1);
-//        Membership memberShip2 = Membership.memberShipCreate("shinsegae","shinsegaepoint");
-//        em.persist(memberShip2);
-//        Membership memberShip3 = Membership.memberShipCreate("cj","cjone");
-//        em.persist(memberShip3);
+        Membership memberShip1 = Membership.memberShipCreate("spc","happypoint");
+        em.persist(memberShip1);
+        Membership memberShip2 = Membership.memberShipCreate("shinsegae","shinsegaepoint");
+        em.persist(memberShip2);
+        Membership memberShip3 = Membership.memberShipCreate("cj","cjone");
+        em.persist(memberShip3);
   }
 
   @DisplayName("정상적으로 가입")
@@ -69,7 +70,7 @@ public class UserMembershipControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(req)))
         .andDo(print())
-        .andExpect(status().isOk())
+        .andExpect(status().is(201))
         .andExpect(jsonPath("response.userId").value(userId))
         .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
         .andExpect(jsonPath("response.membershipId").value(req.getMembershipId()))
@@ -101,7 +102,7 @@ public class UserMembershipControllerTest {
         .andDo(print())
         .andExpect(jsonPath("success").value(false))
         .andExpect(jsonPath("error.message").exists())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().is5xxServerError());
 
   }
 
@@ -160,7 +161,7 @@ public class UserMembershipControllerTest {
         .andDo(print())
         .andExpect(jsonPath("success").value(false))
         .andExpect(jsonPath("error.message").exists())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().is5xxServerError());
   }
 
   @DisplayName("정상적으로 전체 조회")
@@ -250,7 +251,7 @@ public class UserMembershipControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(req)))
         .andDo(print())
-        .andExpect(status().isOk())
+        .andExpect(status().is2xxSuccessful())
         .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
         .andExpect(jsonPath("success").value(true))
         .andExpect(jsonPath("response").value(true))

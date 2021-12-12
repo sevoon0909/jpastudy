@@ -35,6 +35,7 @@ public class UserMembershipServiceTest {
   private EntityManager em;
   @Autowired
   private UserMembershipService userMembershipService;
+
   private DefaultMembershipRequest req;
   private PointSaveMembershipRequest pointReq;
 

@@ -56,11 +56,10 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
       MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
       WebRequest request) {
-
     return new ResponseEntity(
         new JsonResponse(
-            false, null, new JsonError(ex.getMessage(), HttpStatus.NOT_FOUND.value())
-        ), new HttpHeaders(), HttpStatus.NOT_FOUND);
+            false, null, new JsonError(ex.getMessage(), HttpStatus.BAD_REQUEST.value())
+        ), new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
   @Override
